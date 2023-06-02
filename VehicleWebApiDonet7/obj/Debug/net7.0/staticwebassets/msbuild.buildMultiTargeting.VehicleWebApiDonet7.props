@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\VehicleWebApiDonet7.props" />
+</Project>
