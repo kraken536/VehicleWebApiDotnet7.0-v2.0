@@ -16,11 +16,11 @@ namespace VehicleWebApiDonet7.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Car>> GetAllCars()
+        public async Task<ActionResult<List<Car>>> GetAllCars()
         {
-            var result = _carService.GetAllCars();
+            var result = await _carService.GetAllCars();
 
-            if(result == null)
+            if(result is null)
             {
                 return NotFound("There is no car for the moment...");
             }
@@ -29,11 +29,11 @@ namespace VehicleWebApiDonet7.Controllers
         }
 
         [HttpGet("{id:int?}")]
-        public ActionResult<Car> GetCarById(int id)
+        public async Task<ActionResult<Car>> GetCarById(int id)
         {
-            var result = _carService.GetCarById(id);
+            var result = await _carService.GetCarById(id);
 
-            if (result == null)
+            if (result is null)
                 return NotFound("No car available with the given ID...");
 
             return result;
@@ -41,10 +41,10 @@ namespace VehicleWebApiDonet7.Controllers
 
 
         [HttpGet("{color}")]
-        public ActionResult<List<Car>> GetCarsByColor(string color)
+        public async Task<ActionResult<List<Car>>> GetCarsByColor(string color)
         {
             
-            var result = _carService.GetCarByColor(color);
+            var result = await _carService.GetCarByColor(color);
 
             if (result == null)
             {
@@ -55,9 +55,9 @@ namespace VehicleWebApiDonet7.Controllers
         }
 
         [HttpPost("headlight/{id:int?}")]
-        public ActionResult<Car> OnOffCarHeadlightsById(int id)
+        public async Task<ActionResult<Car>> OnOffCarHeadlightsById(int id)
         {
-            var result = _carService.CarHeadlightsById(id);
+            var result = await _carService.CarHeadlightsById(id);
 
             if (result == null)
                 return NotFound("There is no car with the given ID...");
@@ -66,9 +66,9 @@ namespace VehicleWebApiDonet7.Controllers
         }
 
         [HttpPost("add")]
-        public ActionResult<List<Car>> AddNewCar(Car car)
+        public async Task<ActionResult<List<Car>>> AddNewCar(Car car)
         {
-            var result  = _carService.AddNewCar(car);
+            var result  = await _carService.AddNewCar(car);
 
             if (result == null)
                 return NotFound("Invalid Data Inserted Try again...");
@@ -77,9 +77,9 @@ namespace VehicleWebApiDonet7.Controllers
         }
 
         [HttpDelete("delete/{id:int?}")]
-        public ActionResult<Car> DeleteCarById(int id)
+        public async Task<ActionResult<Car>> DeleteCarById(int id)
         {
-            var result = _carService.DeleteCar(id);
+            var result = await _carService.DeleteCar(id);
 
             if(result == null)
             {

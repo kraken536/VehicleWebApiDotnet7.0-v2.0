@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using VehicleWebApiDonet7.Data;
 using VehicleWebApiDonet7.Models;
 
 namespace VehicleWebApiDonet7.Services.CarServices
@@ -6,51 +8,19 @@ namespace VehicleWebApiDonet7.Services.CarServices
     public class CarService : ICarService
     {
 
-        private static List<Car> Cars = new List<Car>()
+        private readonly DataContext _context;
+        public CarService(DataContext context)
         {
-            new Car
-            {
-                Id = 1,
-                Color = "Blue",
-                Model = "Toyota Rav4",
-                Year = 2022,
-                Wheels = 3,
-                Headlights = "On",
-            },
-            new Car
-            {
-                Id = 2,
-                Color = "Red",
-                Model = "Toyota Camry",
-                Year = 2012,
-                Wheels = 4,
-                Headlights = "Off",
-            },
-            new Car
-            {
-                Id = 3,
-                Color = "Blue",
-                Model = "Mercedes Benz",
-                Year = 2022,
-                Wheels = 5,
-                Headlights = "On",
-            },
-            new Car
-            {
-                Id = 4,
-                Color = "Green",
-                Model = "Maseratti",
-                Year = 2021,
-                Wheels = 2,
-                Headlights = "On",
-            },
-        };
+            _context = context;
+        }
 
-        public List<Car>? GetCarByColor(string color)
+        public async Task<List<Car>?> GetCarByColor(string color)
         {
             var result = new List<Car>();
 
-            foreach (Car car in Cars)
+            var temp = await _context.Cars.ToListAsync(); 
+
+            foreach (Car car in temp)
             {
                 if (car.Color.ToLower() == color.ToLower())
                 {
@@ -66,9 +36,9 @@ namespace VehicleWebApiDonet7.Services.CarServices
             return result;
         }
 
-        public Car? CarHeadlightsById(int id)
+        public async Task<Car?> CarHeadlightsById(int id)
         {
-            var result = Cars.Find(x => x.Id == id);
+            var result = await _context.Cars.FindAsync(id);
 
             if (result == null)
                 return null;
@@ -81,33 +51,36 @@ namespace VehicleWebApiDonet7.Services.CarServices
             {
                 result.Headlights = "On";
             }
+            await _context.SaveChangesAsync();
 
             return result;
         }
 
-        public Car? DeleteCar(int id)
+        public async Task<Car?> DeleteCar(int id)
         {
-            var result = Cars.Find(x => x.Id == id);
+            var result = await _context.Cars.FindAsync(id);
 
-            if (result == null)
+            if (result is null)
                 return null;
 
-            Cars.Remove(result);
+            _context.Cars.Remove(result);
+            await _context.SaveChangesAsync();
 
             return result;
         }
 
-        public List<Car>? GetAllCars()
+        public async Task<List<Car>?> GetAllCars()
         {
-            if(Cars.Count == 0)
+            var result = await _context.Cars.ToListAsync();
+            if(result is null)
                 return null;
 
-            return Cars;
+            return result;
         }
 
-        public Car? GetCarById(int id)
+        public async Task<Car?> GetCarById(int id)
         {
-            var result = Cars.Find(Car => Car.Id == id);
+            var result = await _context.Cars.FindAsync(id);
             
             if(result == null)
             {
@@ -117,14 +90,15 @@ namespace VehicleWebApiDonet7.Services.CarServices
             return result;
         }
 
-        public List<Car>? AddNewCar(Car car)
+        public async Task<List<Car>?> AddNewCar(Car car)
         {
-            if (car == null)
+            if (car is null)
                 return null;
 
-            Cars.Add(car);
+            _context.Cars.Add(car);
+            await _context.SaveChangesAsync();
 
-            return Cars;
+            return await _context.Cars.ToListAsync();
         }
     }
 }

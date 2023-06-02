@@ -4,10 +4,10 @@ namespace VehicleWebApiDonet7.Services.BoatServices
 {
     public interface IBoatService
     {
-        List<Boat>? GetBoatsByColor(string color);
+        Task<List<Boat>?> GetBoatsByColor(string color);
 
-        List<Boat>? GetBoatList();
+        Task<List<Boat>?> GetBoatList();
 
-        List<Boat>? AddNewBoat(Boat boat);
+        Task<List<Boat>?> AddNewBoat(Boat boat);
     }
 }

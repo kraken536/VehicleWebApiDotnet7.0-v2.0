@@ -17,10 +17,10 @@ namespace VehicleWebApiDonet7.Controllers
         }
 
         [HttpGet("{color}")]
-        public ActionResult<List<Car>> GetBusByColor(string color)
+        public async Task<ActionResult<List<Car>>> GetBusByColor(string color)
         {
 
-            var result = _busService.GetBusByColor(color);
+            var result = await _busService.GetBusByColor(color);
 
             if (result == null)
             {
@@ -31,9 +31,9 @@ namespace VehicleWebApiDonet7.Controllers
         }
 
         [HttpDelete("delete/{id:int?}")]
-        public ActionResult<Bus> DeleteBus(int id)
+        public async Task<ActionResult<Bus>> DeleteBus(int id)
         {
-            var result = _busService.DeleteBus(id);
+            var result = await _busService.DeleteBus(id);
             if (result == null)
             {
                 return NotFound("There is no bus available with the given ID...");
@@ -43,9 +43,9 @@ namespace VehicleWebApiDonet7.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Bus>> GetBusList()
+        public async Task<ActionResult<List<Bus>>> GetBusList()
         {
-            var result = _busService.GetBusList();
+            var result = await _busService.GetBusList();
             if (result == null)
             {
                 return NotFound("The bus list is empty for the moment...");

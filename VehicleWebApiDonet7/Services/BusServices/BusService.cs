@@ -1,62 +1,37 @@
-﻿using VehicleWebApiDonet7.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using VehicleWebApiDonet7.Data;
+using VehicleWebApiDonet7.Models;
 
 namespace VehicleWebApiDonet7.Services.BusServices
 {
     public class BusService : IBusService
     {
-        private static List<Bus> Buses = new List<Bus>()
-        {
-            new Bus
-            {
-                Id = 1,
-                Color = "White",
-                Model = "Fuel Cell Bus",
-                Year = 2022,
-                BusHeightInMeter = 5,
-            },
-            new Bus
-            {
-                Id = 2,
-                Color = "Yellow",
-                Model = "OniBus Marco Polo",
-                Year = 2014,
-                BusHeightInMeter = 7,
-            },
-            new Bus
-            {
-                Id = 3,
-                Color = "Red",
-                Model = "Londonian Buses",
-                Year = 2018,
-                BusHeightInMeter = 11,
-            },
-            new Bus
-            {
-                Id = 4,
-                Color = "Yellow",
-                Model = "Cobus",
-                Year = 2020,
-                BusHeightInMeter = 5,
-            },
-        };
+        private readonly DataContext _context;
 
-        public Bus? DeleteBus(int id)
+        public BusService(DataContext context)
         {
-            var result = Buses.Find(x => x.Id == id);
+            _context = context;
+        }
 
-            if (result == null)
+        public async Task<Bus?> DeleteBus(int id)
+        {
+            var result = await _context.Buses.FindAsync(id);
+
+            if (result is null)
                 return null;
 
-            Buses.Remove(result);
+            _context.Buses.Remove(result);
+            await _context.SaveChangesAsync();
 
             return result;
         }
 
-        public List<Bus>? GetBusByColor(string color)
+        public async Task<List<Bus>?> GetBusByColor(string color)
         {
             var result = new List<Bus>();
+            var temp = await _context.Buses.ToListAsync();
 
-            foreach (Bus bus in Buses)
+            foreach (Bus bus in temp)
             {
                 if (bus.Color.ToLower() == color.ToLower())
                 {
@@ -72,12 +47,13 @@ namespace VehicleWebApiDonet7.Services.BusServices
             return result;
         }
 
-        public List<Bus>? GetBusList()
+        public async Task<List<Bus>?> GetBusList()
         {
-            if(Buses.Count == 0) 
+            var temp = await _context.Buses.ToListAsync();
+            if(temp.Count == 0) 
                 return null;
 
-            return Buses;
+            return temp;
         }
     }
 }

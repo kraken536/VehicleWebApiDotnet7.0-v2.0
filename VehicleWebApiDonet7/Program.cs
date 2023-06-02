@@ -1,3 +1,4 @@
+using VehicleWebApiDonet7.Data;
 using VehicleWebApiDonet7.Services.BoatServices;
 using VehicleWebApiDonet7.Services.BusServices;
 using VehicleWebApiDonet7.Services.CarServices;
@@ -13,6 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<IBusService, BusService>();
 builder.Services.AddScoped<IBoatService, BoatService>();
+builder.Services.AddDbContext<DataContext>();
 
 var app = builder.Build();
 

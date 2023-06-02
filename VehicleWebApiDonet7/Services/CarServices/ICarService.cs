@@ -5,17 +5,17 @@ namespace VehicleWebApiDonet7.Services.CarServices
 {
     public interface ICarService
     {
-        List<Car>? GetAllCars();
+        Task<List<Car>?> GetAllCars();
 
-        List<Car>? GetCarByColor(string color);
+        Task<List<Car>?> GetCarByColor(string color);
 
-        List<Car>? AddNewCar(Car car);
+        Task<List<Car>?> AddNewCar(Car car);
 
-        Car? GetCarById(int id);
+        Task<Car?> GetCarById(int id);
 
-        Car? CarHeadlightsById(int id);
+        Task<Car?> CarHeadlightsById(int id);
 
-        Car? DeleteCar(int id);
+        Task<Car?> DeleteCar(int id);
 
     }
 }

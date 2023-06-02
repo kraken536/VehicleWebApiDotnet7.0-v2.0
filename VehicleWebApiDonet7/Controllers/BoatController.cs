@@ -16,10 +16,10 @@ namespace VehicleWebApiDonet7.Controllers
             _boatService = boatService;   
         }
 
-        [HttpPost]
-        public ActionResult<List<Boat>> AddNewBoat(Boat boat)
+        [HttpPost("add")]
+        public async Task<ActionResult<List<Boat>>> AddNewBoat(Boat boat)
         {
-            var result = _boatService.AddNewBoat(boat);
+            var result = await _boatService.AddNewBoat(boat);
 
             if(result == null)
             {
@@ -28,10 +28,10 @@ namespace VehicleWebApiDonet7.Controllers
             return result;
         }
 
-        [HttpPost("{color}")]
-        public ActionResult<List<Boat>> GetBoatByColor(string color)
+        [HttpGet("{color}")]
+        public async Task<ActionResult<List<Boat>>> GetBoatByColor(string color)
         {
-            var result = _boatService.GetBoatsByColor(color);
+            var result = await _boatService.GetBoatsByColor(color);
             
             if(result == null)
             {
@@ -43,9 +43,9 @@ namespace VehicleWebApiDonet7.Controllers
 
 
         [HttpGet]
-        public ActionResult<List<Boat>> GetBoatList()
+        public async Task<ActionResult<List<Boat>>> GetBoatList()
         {
-            var result = _boatService.GetBoatList();
+            var result = await _boatService.GetBoatList();
 
             if (result == null)
                 return NotFound("There is no baot available for the moment...");
